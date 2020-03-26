@@ -2,12 +2,14 @@ package com.hello.service;
 
 import com.hello.dao.UserDao;
 import com.hello.exception.DBException;
+import com.hello.model.Role;
 import com.hello.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
@@ -17,6 +19,7 @@ public class ServiceUserImpl implements ServiceUser {
     private static ServiceUserImpl serviceUserImpl;
 
     private final UserDao userDAO;
+
 
     @Autowired
     private ServiceUserImpl(UserDao userDAO) {

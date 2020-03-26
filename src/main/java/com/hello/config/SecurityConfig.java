@@ -22,13 +22,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/registration", "/login").anonymous()
                 .antMatchers("/users").authenticated()
+                .antMatchers("/admin").hasRole("ADMIN")
                 .and().csrf().disable()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login/process")
                 .usernameParameter("name").passwordParameter("password")
                 .failureUrl("/login?error=true")
-                .and().logout();
+                .and().logout().logoutUrl("/logout");
     }
 
     @Override

@@ -3,15 +3,14 @@ package com.hello.controller;
 import com.hello.model.Role;
 import com.hello.model.RoleType;
 import com.hello.model.User;
+import com.hello.service.ServiceRole;
 import com.hello.service.ServiceUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -19,15 +18,26 @@ public class AdminController {
 
     private ServiceUser serviceUser;
 
+    private ServiceRole serviceRole;
+
     @Autowired
     public void setUserService(ServiceUser serviceUser) {
         this.serviceUser = serviceUser;
     }
 
+    @Autowired
+    public void setRoleService(ServiceRole serviceRole) {
+        this.serviceRole = serviceRole;
+    }
+
     @GetMapping
     public ModelAndView getPageAdmin() {
         List<User> users = serviceUser.getAllUserService();
-        return new ModelAndView("/admin/adminpage", "users", users);
+        Set<Role> roles = serviceRole.getAllRolesService();
+        Map<String, Collection<?>> models = new HashMap<>();
+        models.put("users", users);
+        models.put("roles", roles);
+        return new ModelAndView("/admin/adminpage").addAllObjects(models);
     }
 
     @GetMapping(value = "/delete/{id}")
@@ -39,7 +49,9 @@ public class AdminController {
     @GetMapping(value = "/update/{id}")
     public ModelAndView update(@PathVariable(name = "id") int id) {
         User user = serviceUser.getUserByIdService(id);
-        return new ModelAndView("update", "user", user);
+        Set<Role> roles = serviceRole.getAllRolesService();
+        return new ModelAndView("/admin/update", "user", user)
+                .addObject("roles", roles);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -48,11 +60,13 @@ public class AdminController {
                              @RequestParam(value = "password") String password,
                              @RequestParam(value = "age") String ageStr,
                              @RequestParam(value = "city") String city,
-                             @RequestParam(value = "role") String role) {
+                             @RequestParam(value = "roleArray") String[] roleArray) {
         long id = Long.parseLong(idStr);
         int age = Integer.parseInt(ageStr);
         Set<Role> roles = new HashSet<>();
-        roles.add(new Role(RoleType.USER));
+        for (String role: roleArray) {
+            roles.add(new Role(RoleType.valueOf(role)));
+        }
         User user = new User(id, name, age, password, city, roles);
         serviceUser.updateUserService(user);
         return "redirect:/admin";
@@ -63,10 +77,12 @@ public class AdminController {
                               @RequestParam(value = "password") String password,
                               @RequestParam(value = "age") String ageStr,
                               @RequestParam(value = "city") String city,
-                              @RequestParam(value = "role") String role) {
+                              @RequestParam(value = "roleArray") String[] roleArray) {
         int age = Integer.parseInt(ageStr);
         Set<Role> roles = new HashSet<>();
-        roles.add(new Role(RoleType.USER));
+        for (String role: roleArray) {
+            roles.add(new Role(RoleType.valueOf(role)));
+        }
         User user = new User(name, age, password, city, roles);
         serviceUser.addUserService(user);
         return "redirect:/admin";

@@ -17,7 +17,6 @@ public class Role implements GrantedAuthority {
 
     @Column(name = "roleType",
             nullable = false,
-            unique = true,
             length = 32)
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
@@ -27,7 +26,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return null;
+        return roleType.toString();
     }
 
     public Role(RoleType roleType) {
@@ -47,5 +46,10 @@ public class Role implements GrantedAuthority {
     @Override
     public int hashCode() {
         return Objects.hash(roleType);
+    }
+
+    @Override
+    public String toString() {
+        return roleType.toString();
     }
 }

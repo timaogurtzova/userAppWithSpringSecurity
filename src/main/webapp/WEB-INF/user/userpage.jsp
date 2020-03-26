@@ -1,16 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Любовь
-  Date: 21.03.2020
-  Time: 10:17
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
     <title>user</title>
 </head>
 <body>
     <p>Hello, user! <p>
+    <form>
+        <input type="button" value="Logout" onClick='location.href="${contextPath}/logout"'>
+    </form>
 </body>
 </html>

@@ -17,7 +17,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "users_id"),
@@ -45,21 +45,21 @@ public class User implements UserDetails {
 
     }
 
-    public User(String name, int age, String password, String city, Set<Role> role) {
+    public User(String name, int age, String password, String city, Set<Role> roles) {
         this.name = name;
         this.age = age;
         this.password = password;
         this.city = city;
-        this.roles = role;
+        this.roles = roles;
     }
 
-    public User(Long id, String name, int age, String password, String city, Set<Role> role) {
+    public User(Long id, String name, int age, String password, String city, Set<Role> roles) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.password = password;
         this.city = city;
-        this.roles = role;
+        this.roles = roles;
     }
 
     public Long getId() {

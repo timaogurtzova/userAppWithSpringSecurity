@@ -3,6 +3,7 @@ package com.hello.controller;
 import com.hello.model.Role;
 import com.hello.model.RoleType;
 import com.hello.model.User;
+import com.hello.service.ServiceRole;
 import com.hello.service.ServiceUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ public class AuthController {
 
     @Autowired
     private ServiceUser serviceUser;
+
+    @Autowired
+    private ServiceRole serviceRole;
 
     @RequestMapping("/login")
     public String login(@RequestParam(name = "error", required = false) Boolean error,
@@ -39,7 +43,7 @@ public class AuthController {
         boolean addOrNot = false;
         try {
             int ageInt = Integer.parseInt(age);
-            Role role = new Role(RoleType.USER);
+            Role role = serviceRole.getRoleWithName(RoleType.ROLE_USER.name());
             Set<Role> roles = new HashSet<>();
             roles.add(role);
             User user = new User(name, ageInt, password, city, roles);
