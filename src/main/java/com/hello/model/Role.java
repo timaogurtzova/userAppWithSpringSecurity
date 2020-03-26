@@ -24,16 +24,22 @@ public class Role implements GrantedAuthority {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 
-    @Override
-    public String getAuthority() {
-        return roleType.toString();
+    public Role(Long id, RoleType roleType) {
+        this.id = id;
+        this.roleType = roleType;
     }
 
     public Role(RoleType roleType) {
         this.roleType = roleType;
     }
 
-    protected Role(){}
+    protected Role() {
+    }
+
+    @Override
+    public String getAuthority() {
+        return roleType.toString();
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -20,7 +20,6 @@ public class ServiceUserImpl implements ServiceUser {
 
     private final UserDao userDAO;
 
-
     @Autowired
     private ServiceUserImpl(UserDao userDAO) {
         this.userDAO = userDAO;
@@ -56,8 +55,10 @@ public class ServiceUserImpl implements ServiceUser {
     public User getUserWithNameService(String name) {
         User user = null;
         try {
-            if (name != null)
+            if (name != null){
                 user = userDAO.getUserWithName(name);
+
+            }
         } catch (DBException e) {
 
         }
