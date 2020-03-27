@@ -11,11 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
-@Component
+//@Component
 public class AuthProviderImpl implements AuthenticationProvider {
 
     @Autowired
@@ -25,14 +24,14 @@ public class AuthProviderImpl implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();
         User user = serviceUser.getUserWithNameService(name);
-        if (user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
         String password = authentication.getCredentials().toString();
-        if (!password.equals(user.getPassword())){
+        if (!password.equals(user.getPassword())) {
             throw new BadCredentialsException("Bad credentials");
         }
-        Set<Role> authorities = (Set<Role>)user.getAuthorities();
+        Set<Role> authorities = (Set<Role>) user.getAuthorities();
         return new UsernamePasswordAuthenticationToken(user, null, authorities);
 
     }

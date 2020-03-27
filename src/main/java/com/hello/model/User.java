@@ -17,7 +17,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "users_id"),
@@ -70,8 +70,8 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public void setRoles(Set<Role> role) {
-        this.roles = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public String getName() {

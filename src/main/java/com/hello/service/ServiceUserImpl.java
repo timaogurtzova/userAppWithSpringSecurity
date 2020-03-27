@@ -2,31 +2,23 @@ package com.hello.service;
 
 import com.hello.dao.UserDao;
 import com.hello.exception.DBException;
-import com.hello.model.Role;
 import com.hello.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Transactional(rollbackFor = DBException.class)
 public class ServiceUserImpl implements ServiceUser {
 
-    private static ServiceUserImpl serviceUserImpl;
-
     private final UserDao userDAO;
 
     @Autowired
     private ServiceUserImpl(UserDao userDAO) {
         this.userDAO = userDAO;
-    }
-
-    public static ServiceUserImpl getInstance() {
-        return serviceUserImpl;
     }
 
     @Override
@@ -55,9 +47,11 @@ public class ServiceUserImpl implements ServiceUser {
     public User getUserWithNameService(String name) {
         User user = null;
         try {
-            if (name != null){
+            if (name != null) {
                 user = userDAO.getUserWithName(name);
-
+                if (user != null) {
+                    user.getAuthorities().size(); //LAZY
+                }
             }
         } catch (DBException e) {
 

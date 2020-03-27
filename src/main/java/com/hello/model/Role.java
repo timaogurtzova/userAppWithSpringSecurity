@@ -3,7 +3,6 @@ package com.hello.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,8 +20,8 @@ public class Role implements GrantedAuthority {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private Set<User> users;
 
     public Role(Long id, RoleType roleType) {
         this.id = id;
@@ -34,6 +33,10 @@ public class Role implements GrantedAuthority {
     }
 
     protected Role() {
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

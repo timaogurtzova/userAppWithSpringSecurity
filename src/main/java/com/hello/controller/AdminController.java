@@ -64,8 +64,17 @@ public class AdminController {
         long id = Long.parseLong(idStr);
         int age = Integer.parseInt(ageStr);
         Set<Role> roles = new HashSet<>();
-        for (String role: roleArray) {
-            roles.add(new Role(RoleType.valueOf(role)));
+        for (int i = 0; i < roleArray.length; i++) {
+            switch (roleArray[i]) {
+                case "ROLE_USER": {
+                    roles.add(new Role(2L, RoleType.valueOf(roleArray[i])));
+                    break;
+                }
+                case "ROLE_ADMIN": {
+                    roles.add(new Role(1L, RoleType.valueOf(roleArray[i])));
+                    break;
+                }
+            }
         }
         User user = new User(id, name, age, password, city, roles);
         serviceUser.updateUserService(user);
@@ -80,8 +89,18 @@ public class AdminController {
                               @RequestParam(value = "roleArray") String[] roleArray) {
         int age = Integer.parseInt(ageStr);
         Set<Role> roles = new HashSet<>();
-        for (String role: roleArray) {
-            roles.add(new Role(RoleType.valueOf(role)));
+        for (int i = 0; i < roleArray.length; i++) {
+            switch (roleArray[i]) {
+                case "ROLE_USER": {
+                    roles.add(new Role(2L, RoleType.valueOf(roleArray[i])));
+                    break;
+                }
+                case "ROLE_ADMIN": {
+                    roles.add(new Role(1L, RoleType.valueOf(roleArray[i])));
+                    break;
+                }
+            }
+
         }
         User user = new User(name, age, password, city, roles);
         serviceUser.addUserService(user);
